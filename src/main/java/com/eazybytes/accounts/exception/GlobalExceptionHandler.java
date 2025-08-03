@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     /**
-     * why I am using WebReques? because we are tying to pass the api path in our error response
+     * why I am using WebReques? because we are trying to pass the api path in our error response
      * so that the client can know which API has caused the error.
      * ***
      * * @ExceptionHandler is used to handle specific exceptions for this method.
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
          * and returning the response entity with status code 400
          */
         ErrorResponceDto errorResponceDto = new ErrorResponceDto(
-                webRequest.getDescription(false),
+                webRequest.getDescription(true),
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage(),
                 LocalDateTime.now()
