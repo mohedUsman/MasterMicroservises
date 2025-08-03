@@ -49,6 +49,24 @@ public class AccountsController {
                 .body(customerDto);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ResponceDto> updateAccountDetails(@RequestBody CustomerDto customerDto) {
+        /*
+         * here if isUpdated is true then I am returning the response entity with status code 200
+         * and message 200, otherwise I am returning the response entity with status code 417
+         */
+        boolean isUpdated = accountsService.updateAccount(customerDto);
+        if(isUpdated){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponceDto(AccountsConstants.STATUS_200
+                            ,AccountsConstants.MESSAGE_200));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponceDto(AccountsConstants.STATUS_417,
+                            AccountsConstants.MESSAGE_417_UPDATE));
+        }
+    }
+
 
 
 }

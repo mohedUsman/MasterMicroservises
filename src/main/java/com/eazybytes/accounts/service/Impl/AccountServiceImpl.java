@@ -1,4 +1,4 @@
-package com.eazybytes.accounts.Impl;
+package com.eazybytes.accounts.service.Impl;
 
 import com.eazybytes.accounts.DTO.AccountsDto;
 import com.eazybytes.accounts.DTO.CustomerDto;
@@ -85,5 +85,41 @@ public class AccountServiceImpl implements IAccountsService {
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
         customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
         return customerDto;
+    }
+
+    /**
+     * In this method I am updating the account by account ID,accId can not be changed once created
+     * name, email and so on can be changed,
+     * so I am updating the account details by fetching the account by ID
+     * and then updating the account details with the new details from the customerDto
+     */
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+
+       AccountsDto accountsDto = customerDto.getAccountsDto();
+       if(accountsDto != null) {
+           Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
+                   () -> new ResourceNotFoundException("Account", "accountNumber", accountsDto.getAccountNumber().toString())
+           );
+           /*
+            * I am getting the value through the account number if I give the different account number
+            * it will throw ResourceNotFoundException, so I am not writing the code to handle that
+            */
+           AccountsMapper.mapToAccounts(accountsDto, accounts);
+           accountsRepository.save(accounts);
+
+           Long customerID = accounts.getCustomerID();
+           Customer customer = customerRepository.findById(customerID).orElseThrow(
+                   () -> new ResourceNotFoundException("Customer", "customerID", customerID.toString())
+           );
+           CustomerMapper.mapToCustomer(customerDto, customer);
+           customerRepository.save(customer);
+           /*
+            * and finally I am saving the customer details and making isUpdated true
+            */
+           isUpdated = true;
+       }
+        return isUpdated;
     }
 }

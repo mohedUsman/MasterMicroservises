@@ -11,4 +11,9 @@ public interface IAccountsService {
     void createAccount(CustomerDto customerDto);
 
     CustomerDto featchAccount(String mobileNumber);
+
+    /**
+     * boolean method to update the account details, this method will tell weather the update was successful or not
+     */
+    boolean updateAccount(CustomerDto customerDto);
 }
