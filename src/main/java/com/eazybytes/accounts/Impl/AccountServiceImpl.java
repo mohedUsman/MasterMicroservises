@@ -1,10 +1,13 @@
 package com.eazybytes.accounts.Impl;
 
+import com.eazybytes.accounts.DTO.AccountsDto;
 import com.eazybytes.accounts.DTO.CustomerDto;
 import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
+import com.eazybytes.accounts.exception.ResourceNotFoundException;
+import com.eazybytes.accounts.mapper.AccountsMapper;
 import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
@@ -65,5 +68,22 @@ public class AccountServiceImpl implements IAccountsService {
         newAccounts.setCreatedAt(LocalDateTime.now());
         newAccounts.setCreatedBy("System");
         return newAccounts;
+    }
+
+    @Override
+    public CustomerDto featchAccount(String mobileNumber) {
+       Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+        /**
+         * Through  that mobile number I am fetching Account details also, but I have only mobile number
+         * * so I am using the customer object to fetch the account details
+         */
+        Accounts accounts =accountsRepository.findByCustomerID(customer.getCustomerID())
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "customerID", customer.getCustomerID().toString())
+                );
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
+        return customerDto;
     }
 }

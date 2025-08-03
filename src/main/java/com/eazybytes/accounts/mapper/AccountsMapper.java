@@ -13,7 +13,7 @@ public class AccountsMapper {
         accountsDto.setAccountNumber(accounts.getAccountNumber());
         accountsDto.setAccountType(accounts.getAccountType());
         accountsDto.setBranchAddress(accounts.getBranchAddress());
-        return accountsDto;
+        return accountsDto  ;
     }
 
     public static Accounts mapToAccounts(AccountsDto accountsDto, Accounts accounts) {
