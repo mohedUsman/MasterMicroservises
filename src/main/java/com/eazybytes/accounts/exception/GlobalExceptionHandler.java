@@ -41,5 +41,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponceDto, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponceDto> handelCustomerAlreadyExistsException(ResourceNotFoundException exception,WebRequest webRequest){
+
+        ErrorResponceDto errorResponceDto = new ErrorResponceDto(
+                webRequest.getDescription(true),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponceDto, HttpStatus.BAD_REQUEST);
+    }
+
 
 }
