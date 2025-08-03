@@ -1,6 +1,8 @@
 package com.eazybytes.accounts.service;
 
 import com.eazybytes.accounts.DTO.CustomerDto;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 
 public interface IAccountsService {
 
@@ -16,4 +18,7 @@ public interface IAccountsService {
      * boolean method to update the account details, this method will tell weather the update was successful or not
      */
     boolean updateAccount(CustomerDto customerDto);
+
+
+    boolean deleteAccount(String mobileNumber);
 }
