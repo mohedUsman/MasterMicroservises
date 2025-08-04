@@ -5,24 +5,29 @@ import com.eazybytes.accounts.DTO.ResponceDto;
 import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.service.IAccountsService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
+// @Validated its tells the Spring framework to validate the request body for all the methods in this controller
+@Validated
 public class AccountsController {
 
 
     private IAccountsService accountsService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponceDto> createAccount(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<ResponceDto> createAccount(@Valid  @RequestBody CustomerDto customerDto){
         /**
          * here I created a ResponceDTO in that I have aadded the status code, message and dummy message
          * and returning the response entity with status code 201
@@ -38,7 +43,10 @@ public class AccountsController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam String mobileNumber) {
+    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam
+                                                           @Pattern(regexp = "^\\d{10}$",
+                                                                   message = "Mobile number must be 10 digits")
+                                                               String mobileNumber) {
         /**
          * here I am fetching the customer details by mobile number
          * and returning the response entity with status code 200
@@ -50,7 +58,7 @@ public class AccountsController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponceDto> updateAccountDetails(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponceDto> updateAccountDetails(@Valid @RequestBody CustomerDto customerDto) {
         /*
          * here if isUpdated is true then I am returning the response entity with status code 200
          * and message 200, otherwise I am returning the response entity with status code 417
@@ -68,7 +76,10 @@ public class AccountsController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponceDto> deleteAccount(@RequestParam String mobileNumber){
+    public ResponseEntity<ResponceDto> deleteAccount(@RequestParam
+                                                         @Pattern(regexp = "^\\d{10}$",
+                                                                 message = "Mobile number must be 10 digits")
+                                                         String mobileNumber){
         boolean isDeleted =accountsService.deleteAccount(mobileNumber);
         if(isDeleted){
             return ResponseEntity.status(HttpStatus.OK)
