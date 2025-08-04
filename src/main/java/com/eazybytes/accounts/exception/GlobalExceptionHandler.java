@@ -53,5 +53,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponceDto, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This method is used to handel the RuntimeException and we are using Exception class
+     * to handle all the runtime exceptions
+     * this method is used to handle all the exceptions that are not handled by the above methods
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponceDto> handelGlobalException(Exception exception,WebRequest webRequest){
+
+        ErrorResponceDto errorResponceDto = new ErrorResponceDto(
+                webRequest.getDescription(true),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponceDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 
 }
