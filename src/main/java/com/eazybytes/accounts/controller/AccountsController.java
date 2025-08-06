@@ -5,6 +5,9 @@ import com.eazybytes.accounts.DTO.ResponceDto;
 import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.service.IAccountsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -16,6 +19,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/*
+ * use of @Tag annotation is to group the controller in the swagger documentation
+ */
+@Tag(
+        name = "Accounts Service",
+        description = "This controller handles all the operations related to customer accounts, including creation, fetching, updating, and deletion."
+)
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
@@ -23,9 +33,22 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class AccountsController {
 
-
     private IAccountsService accountsService;
 
+    /*
+     * this @Operation annotation is used to provide additional information about the API endpoint
+     */
+    @Operation(
+            summary = "Create a new customer account",
+            description = "This endpoint allows you to create a new customer account by providing the necessary details in the request body."
+    )
+    /*
+        * this @ApiResponse annotation is used to document the response of the API endpoint
+     */
+    @ApiResponse(
+            responseCode = "201",
+            description = "Account created successfully"
+    )
     @PostMapping("/create")
     public ResponseEntity<ResponceDto> createAccount(@Valid  @RequestBody CustomerDto customerDto){
         /**
@@ -42,6 +65,14 @@ public class AccountsController {
 
     }
 
+    @Operation(
+            summary = "Fetch customer account details",
+            description = "This endpoint retrieves the account details of a customer using their mobile number."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Account details fetched successfully"
+    )
     @GetMapping("/fetch")
     public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam
                                                            @Pattern(regexp = "^\\d{10}$",
@@ -57,6 +88,18 @@ public class AccountsController {
                 .body(customerDto);
     }
 
+    @Operation(
+            summary = "Update customer account details",
+            description = "This endpoint allows you to update the account details of a customer."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Account details updated successfully"
+    )
+    @ApiResponse(
+            responseCode = "417",
+            description = "Failed to delete account, account not found"
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponceDto> updateAccountDetails(@Valid @RequestBody CustomerDto customerDto) {
         /*
@@ -75,6 +118,18 @@ public class AccountsController {
         }
     }
 
+    @Operation(
+            summary = "Delete customer account",
+            description = "This endpoint allows you to delete a customer account using their mobile number."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Account deleted successfully"
+    )
+    @ApiResponse(
+            responseCode = "417",
+            description = "Failed to delete account, account not found"
+    )
     @DeleteMapping("/delete")
     public ResponseEntity<ResponceDto> deleteAccount(@RequestParam
                                                          @Pattern(regexp = "^\\d{10}$",
