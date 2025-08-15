@@ -1,0 +1,44 @@
+#what is the use of this file?
+# This file is used to define and run multi-container Docker applications.
+# here i have diffrent applications running in different containers
+# Each service is defined with its own image, container name, ports, and resource limits.
+# The services are connected through a custom network named "usman".
+# by running this file, you can easily start all the services with a single command.
+
+services:
+  accounts:
+    image: "mohammedusman/accounts:v1"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - usman
+  loans:
+    image: "mohammedusman/lones:v1"
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - usman
+  cards:
+    image: "mohammedusman/cards:v1"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - usman
+networks:
+  usman:
+    driver: "bridge"
