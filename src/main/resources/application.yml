@@ -22,3 +22,16 @@ spring:
 
 build:
   version: "1.0"
+
+#declaring the properties for the test of @ConfigurationProperties
+#This is used to bind the properties from the application.yml file to the Java class
+#in this below properties I have given different combination of String, Map(key, value), List
+#So that I can create a record or DTO with these properties
+accounts:
+  message: "Hello from Accounts Service by usman"
+  contactDetails:
+    email: "usman@gamil.com"
+    name: "Mohammed Usman"
+  onCallSupport:
+    -(555) 555-5555
+    -(555) 555-5556

@@ -1,5 +1,6 @@
 package com.eazybytes.accounts;
 
+import com.eazybytes.accounts.DTO.AccountContactInfoDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -7,7 +8,13 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+/*
+ * this annotation is used to enable the configuration properties for the AccountContactInfoDto class
+ */
+@EnableConfigurationProperties(value = {AccountContactInfoDto.class})
 @OpenAPIDefinition(
    info = @Info(
 		   		title = "Accounts Service API",

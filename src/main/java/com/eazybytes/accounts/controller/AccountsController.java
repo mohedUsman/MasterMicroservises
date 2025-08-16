@@ -1,5 +1,6 @@
 package com.eazybytes.accounts.controller;
 
+import com.eazybytes.accounts.DTO.AccountContactInfoDto;
 import com.eazybytes.accounts.DTO.CustomerDto;
 import com.eazybytes.accounts.DTO.ResponceDto;
 import com.eazybytes.accounts.constants.AccountsConstants;
@@ -57,6 +58,11 @@ public class AccountsController {
      */
     @Autowired
     private Environment environment;
+
+    //creating a AccountContactInfoDto object to access the contact information from the application.properties file
+    @Autowired
+    private AccountContactInfoDto accountContactInfoDto;
+
     /*
      * this @Operation annotation is used to provide additional information about the API endpoint
      */
@@ -209,6 +215,24 @@ public class AccountsController {
     public ResponseEntity<String> getjavaVersion(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "In case of any issue You can contact to this details."
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Account created successfully"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error occurred while fetching build info"
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountContactInfoDto> getContactInfo(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(accountContactInfoDto);
     }
 
 
