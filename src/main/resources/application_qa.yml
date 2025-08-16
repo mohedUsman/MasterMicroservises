@@ -1,0 +1,21 @@
+#here we define the production profile for the application and the properties in default is default
+
+#when we run the application with the production profile, this file will be used
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+
+
+build:
+  version: "2.0"
+
+accounts:
+  message: "Hello from Accounts Service by usman"
+  contactDetails:
+    email: "abc@gamil.com"
+    name: "abc"
+  onCallSupport:
+    -(555) 555-1111
+    -(555) 555-2312

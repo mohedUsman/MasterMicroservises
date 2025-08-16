@@ -19,9 +19,20 @@ spring:
       ddl-auto: update
     show-sql: true
 
+#here I am telling that we also have different profiles for the application
+#and we have different properties for each profile
+  config:
+    import:
+      - "classpath:application_qa.yml"
+      - "classpath:application_prod.yml"
+
+#here I am telling to activate production profile by default
+  profiles:
+    active: "prod"
+
 
 build:
-  version: "1.0"
+  version: "3.0"
 
 #declaring the properties for the test of @ConfigurationProperties
 #This is used to bind the properties from the application.yml file to the Java class

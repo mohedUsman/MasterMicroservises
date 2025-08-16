@@ -190,7 +190,7 @@ public class AccountsController {
             responseCode = "500",
             description = "Error occurred while fetching build info"
     )
-    @GetMapping("/builfInfo")
+    @GetMapping("/build-info")
     public ResponseEntity<String> getBuilfInfo(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(buildName);
