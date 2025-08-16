@@ -35,6 +35,13 @@ public class AccountsController {
 
     private IAccountsService accountsService;
 
+
+    /*
+     * this @Value annotation is used to inject the value of the build version from the application.properties file
+     * into the buildName variable
+     */
+    @Value("${build.version}")
+    private String buildName;
     /*
      * this @Operation annotation is used to provide additional information about the API endpoint
      */
@@ -145,6 +152,27 @@ public class AccountsController {
                     .body(new ResponceDto(AccountsConstants.STATUS_417,
                             AccountsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Create a new api to get the build info",
+            description = "This endpoint allows you to create a new customer account by providing the necessary details in the request body."
+    )
+    /*
+     * this @ApiResponse annotation is used to document the response of the API endpoint
+     */
+    @ApiResponse(
+            responseCode = "201",
+            description = "Account created successfully"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error occurred while fetching build info"
+    )
+    @GetMapping("/builfInfo")
+    public ResponseEntity<String> getBuilfInfo(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(buildName);
     }
 
 
