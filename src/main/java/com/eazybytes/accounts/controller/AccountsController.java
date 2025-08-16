@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -28,13 +29,19 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+
 // @Validated its tells the Spring framework to validate the request body for all the methods in this controller
 @Validated
 public class AccountsController {
 
-    private IAccountsService accountsService;
+    //this is for constructor-based dependency injection
+    private final IAccountsService accountsService;
 
+
+    // Constructor injection is used to inject the IAccountsService dependency into the AccountsController
+    public AccountsController(IAccountsService accountsService) {
+        this.accountsService = accountsService;
+    }
 
     /*
      * this @Value annotation is used to inject the value of the build version from the application.properties file
