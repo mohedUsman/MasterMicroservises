@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -49,6 +50,13 @@ public class AccountsController {
      */
     @Value("${build.version}")
     private String buildName;
+
+    /*
+     * this Environment is used to access the environment properties it can't be used in side the application.properties file
+     * as it exposes the sencitive information
+     */
+    @Autowired
+    private Environment environment;
     /*
      * this @Operation annotation is used to provide additional information about the API endpoint
      */
@@ -180,6 +188,27 @@ public class AccountsController {
     public ResponseEntity<String> getBuilfInfo(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(buildName);
+    }
+
+    @Operation(
+            summary = "Get Java Version",
+            description = "This endpoint retrieves the Java version used by the application."
+    )
+    /*
+     * this @ApiResponse annotation is used to document the response of the API endpoint
+     */
+    @ApiResponse(
+            responseCode = "201",
+            description = "Account created successfully"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error occurred while fetching build info"
+    )
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getjavaVersion(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
     }
 
 
