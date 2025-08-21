@@ -24,5 +24,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
+  #connecting to the config server endpoints
+  #the name of the config server is optional, if not provided it will look for the default config server
+  config:
+    import: "optional:configserver:http://localhost:8071"
 
