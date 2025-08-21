@@ -2,7 +2,13 @@
 server:
   port: 8080
 
+#here I need to give the same name as the name inside the configServer
 spring:
+  application:
+    name: "accounts"
+  #when ever the accounts microservice starts, it will look for prod profiles
+  profiles:
+    active: "prod"
   datasource:
     url: jdbc:h2:mem:test
     driverClassName: org.h2.Driver
@@ -19,30 +25,4 @@ spring:
       ddl-auto: update
     show-sql: true
 
-#here I am telling that we also have different profiles for the application
-#and we have different properties for each profile
-  config:
-    import:
-      - "classpath:application_qa.yml"
-      - "classpath:application_prod.yml"
 
-#here I am telling to activate production profile by default
-  profiles:
-    active: "prod"
-
-
-build:
-  version: "3.0"
-
-#declaring the properties for the test of @ConfigurationProperties
-#This is used to bind the properties from the application.yml file to the Java class
-#in this below properties I have given different combination of String, Map(key, value), List
-#So that I can create a record or DTO with these properties
-accounts:
-  message: "Hello from Accounts Service by usman"
-  contactDetails:
-    email: "usman@gamil.com"
-    name: "Mohammed Usman"
-  onCallSupport:
-    -(555) 555-5555
-    -(555) 555-5556
