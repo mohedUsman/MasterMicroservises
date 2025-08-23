@@ -1,5 +1,7 @@
 package com.eazybytes.accounts.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -18,6 +20,17 @@ import java.util.Map;
  */
 //this annotation is used to bind the properties from the application.properties file with prifix "accounts" as we have given accounts in yml file
 @ConfigurationProperties(prefix = "accounts")
-public record AccountContactInfoDto(String message, Map<String, String> contactDetails
-                                    , List<String> onCallSupport) {
+@Getter
+@Setter
+/*
+ why I am changed record to class?
+ A record in Java is a special type of class that is intended to be a simple, immutable
+ but as in spring config if I want to change the properties is run time this will not be possible as it is immutable
+ so I have changed it to class and added @Getter and @Setter annotation from lombok to generate the getters and setters for the fields
+ */
+public class AccountContactInfoDto {
+
+    private String message;
+    private Map<String, String> contactDetails;
+    private List<String> onCallSupport;
 }
